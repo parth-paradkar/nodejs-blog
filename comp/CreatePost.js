@@ -1,14 +1,48 @@
+import Axios from "axios";
 
 export class CreatePost extends React.Component {
+
+    state= {
+        title:'',
+        author: '',
+        content: ''
+    }
+
+    handleTitleChange = e => {
+        this.setState({ title: e.target.value });
+      }
+
+      handleAuthorChange = e => {
+        this.setState({ author: e.target.value });
+      }
+
+      handleContentChange = e => {
+        this.setState({ content: e.target.value });
+      }
+
+      handleSubmit = e => {
+          e.preventDefault()
+
+          const newPost = {
+              title: this.state.title,
+              author: this.state.author,
+              content: this.state.content
+          }
+
+          Axios.post('/api/create', newPost).then( (res => {
+              console.log(res)
+          }))
+      }
+
     render() {
         return (
             <div className="create-p">
                 <h1>Create New Post</h1>
-                <form action="/api/create" method="POST" className="form-w">
-                    <input name="title" type="text" placeholder=" Post Title" />
-                    <input name="author" type="text" placeholder="Author's Username" />
+                <form onSubmit={this.handleSubmit} className="form-w">
+                    <input onChange={this.handleTitleChange} name="title" type="text" placeholder=" Post Title" />
+                    <input onChange={this.handleAuthorChange} name="author" type="text" placeholder="Author's Username" />
                     <br />
-                    <textarea className="text-a" name="content" placeholder="Write your post Content here" />
+                    <textarea onChange={this.handleContentChange} className="text-a" name="content" placeholder="Write your post Content here" />
                     <button type="submit" name="submit"> Submit </button>
                 </form>
                 <style jsx>

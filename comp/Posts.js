@@ -3,33 +3,31 @@ import axios from 'axios'
 
 class Posts extends React.Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            posts: [''],
-            isLoading: true
-        }
+    ids = []
+
+    state = {
+        posts: [],
+        isLoading: true,
     }
 
-    componentWillMount() {
-        axios.get('/api/all').then( res => {
-            console.log(res)
-            this.setState(
-                {data: res.data,
-                isLoading: false})
-            console.log(this.state.data)
-        }).catch(err => console.log('Error'))
+    async componentDidMount() {
+        
+        const { data } = await axios.get('/api/all')
+        this.setState({posts: data, isLoading: false})
+
+        console.log(this.state.posts)
+
     }
 
     render() {
-        const { data } = this.state
+        const { posts } = this.state
         return (
             <div className="posts-w">
                 <h2>Recent Posts </h2>
 
                 {
-                    Array.isArray(data) && data.map( post => {
-                        <Post title={post.title} />
+                    posts.map( post => {
+                        <Post title={post.title} /> 
                     })
                 }
                 <Post title="Exploring React and axios in deep" />
