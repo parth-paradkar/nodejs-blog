@@ -11,6 +11,21 @@ const validateLogin = require('./validation/login');
 const User = require('./models/User');
 
 // Endpoint to create a new user
+
+/*
+request format:
+{
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
+}
+
+password must be of atleast 6 characters
+password2 should match with password
+
+*/
+
 router.post('/register', (req, res)=> {
     // validation
     const {errors, isValid} = validateRegister(req.body);
@@ -47,6 +62,8 @@ router.post('/register', (req, res)=> {
                             .catch(err => console.log(err));
                     })
                 })
+
+                
             }
     })
 })
@@ -97,7 +114,8 @@ router.post('/login', (req, res) => {
                                 })
                                 res.json({
                                     validation: true,
-                                    message: "Login successful"
+                                    message: "Login successful",
+                                    token: token
                                 })
                             }
                         )
